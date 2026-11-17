@@ -1,0 +1,16 @@
+{
+  "name": "todo-bot",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "todo",
+      "database_id": "ecc27bc3-249f-422c-801e-8d06e773bc5f",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": { "GRAPH_VERSION": "v23.0" }
+}

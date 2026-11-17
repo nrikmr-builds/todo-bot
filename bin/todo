@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Talk to the todo-bot Worker from the terminal (used by the Claude Code /todo skill).
+#   todo list [category]            show open items
+#   todo tool <name> '<json input>' run one list operation (see: todo tools)
+#   todo tools                      list available operations
+#   todo chat "<text>"              send free text through the same Haiku agent as WhatsApp
+set -euo pipefail
+CONF="${TODO_CONF:-$HOME/.config/todo-bot/env}"
+[ -f "$CONF" ] || { echo "Missing $CONF (needs TODO_URL and TODO_TOKEN)" >&2; exit 1; }
+# shellcheck disable=SC1090
+source "$CONF"
+auth=(-H "Authorization: Bearer $TODO_TOKEN")
+case "${1:-list}" in
+  list)  curl -fsS "${auth[@]}" -G "$TODO_URL/api/list" ${2:+--data-urlencode "category=$2"}; echo ;;
+  tools) curl -fsS "${auth[@]}" "$TODO_URL/api/tools" ;;
+  tool)  [ $# -ge 2 ] || { echo "usage: todo tool <name> '<json>'" >&2; exit 2; }
+         jq -nc --arg n "$2" --argjson i "${3:-{\}}" '{name:$n,input:$i}' \
+           | curl -fsS "${auth[@]}" -H 'Content-Type: application/json' -d @- "$TODO_URL/api/tool"; echo ;;
+  chat)  jq -nc --arg t "${*:2}" '{text:$t}' \
+           | curl -fsS "${auth[@]}" -H 'Content-Type: application/json' -d @- "$TODO_URL/api/chat" | jq -r .reply ;;
+  *) sed -n '2,7p' "$0"; exit 2 ;;
+esac
