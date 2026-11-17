@@ -8,6 +8,12 @@ WhatsApp ─► Meta Cloud API ─► Cloudflare Worker (/webhook) ─► Claude
 Claude Code /todo ─► bin/todo ─► /api/*  ─────────────►  D1 database (categories, items, archive)
 ```
 
+## Why I built it
+
+I already kept my to-do lists in WhatsApp. To keep the list on top, I used to copy the last message, edit it by hand, and send it again so it showed up as the most recent message. I chose WhatsApp because I'm already there all day texting friends, so seeing my to-do list among those chats reminds me what I still need to get done.
+
+This bot keeps that habit and removes the manual part. I text changes in plain English, and the bot replies with the updated list, which keeps it at the top of the chat.
+
 ## How it works
 
 - **One agent, many front ends.** Free text from WhatsApp, or from the terminal via `bin/todo chat`, goes to a Claude Haiku tool-use loop (`src/agent.ts`). The model never edits the list directly. It calls typed tools (`src/tools.ts`) such as `add_items`, `complete_items`, `move_items` and `restore_items`, and it may only confirm a change after a tool result says the change happened.
