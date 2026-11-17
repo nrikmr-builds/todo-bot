@@ -12,7 +12,7 @@ Claude Code /todo ─► bin/todo ─► /api/*  ──────────�
 
 I already kept my to-do lists in WhatsApp. To keep the list on top, I used to copy the last message, edit it by hand, and send it again so it showed up as the most recent message. I chose WhatsApp because I'm already there all day texting friends, so seeing my to-do list among those chats reminds me what I still need to get done.
 
-This bot keeps that habit and removes the manual part. I text changes in plain English, and the bot replies with the updated list, which keeps it at the top of the chat.
+This bot keeps that habit and removes the manual part. I text changes in plain English and the bot confirms each one. When I ask for the list, it sends the current version, which puts it back at the top of my chats.
 
 ## How it works
 
